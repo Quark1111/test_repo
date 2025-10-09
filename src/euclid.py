@@ -1,6 +1,8 @@
 def gcd(a, b, x, y):
-    a1 = 1; b1 = 0;
-    a2 = 0; b2 = 1;
+    a1 = 1
+    b1 = 0
+    a2 = 0
+    b2 = 1
     ms = [[a1, b1]]
     cnt = 0
     while b != 0:
