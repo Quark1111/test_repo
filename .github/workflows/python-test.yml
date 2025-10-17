@@ -22,4 +22,5 @@ jobs:
         
     - name: Run tests
       run: |
-        pytest -v
+        cd src
+        pytest test_sort.py -v
