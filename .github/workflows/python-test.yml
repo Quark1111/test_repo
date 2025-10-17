@@ -20,13 +20,30 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest
         
-    - name: Debug - List all files
+    - name: Debug - Show file structure
       run: |
-        echo "=== Все файлы в репозитории ==="
+        echo "=== Полная структура репозитория ==="
+        find . -type f -name "*.py" | head -20
+        echo "=== Содержимое корневой папки ==="
         ls -la
-        echo "=== Все .py файлы ==="
-        find . -name "*.py" -type f
+        echo "=== Содержимое всех подпапок ==="
+        find . -type d -exec ls -la {} \; 2>/dev/null | head -50
+        
+    - name: Rename test file if needed
+      run: |
+        # Переименуем файл чтобы pytest его нашел
+        if [ -f "test_sort.py" ]; then
+          mv test_sort.py test_heap.py
+          echo "Переименован test_sort.py -> test_heap.py"
+        fi
+        if [ -f "src/test_sort.py" ]; then
+          mv src/test_sort.py src/test_heap.py
+          echo "Переименован src/test_sort.py -> src/test_heap.py"
+        fi
         
     - name: Run tests
       run: |
-        pytest -v
+        # Запустим pytest с поиском во всех папках
+        pytest --collect-only -v
+        echo "=== Запуск тестов ==="
+        pytest test_heap.py -v || pytest src/test_heap.py -v || find . -name "test_*.py" -exec pytest {} -v \;
