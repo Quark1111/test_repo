@@ -20,7 +20,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest
         
+    - name: Debug - List all files
+      run: |
+        echo "=== Все файлы в репозитории ==="
+        ls -la
+        echo "=== Все .py файлы ==="
+        find . -name "*.py" -type f
+        
     - name: Run tests
       run: |
-        cd src
-        pytest test_sort.py -v
+        pytest -v
