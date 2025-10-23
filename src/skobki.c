@@ -19,7 +19,7 @@ void pop(stack *begin){
 }
 bool get(stack *begin, char simbol){
     if (begin->next != NULL)
-	return begin->next->simbol == simbol;
+		return begin->next->simbol == simbol;
     return 0;
 }
 int main(){
