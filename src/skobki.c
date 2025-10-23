@@ -29,37 +29,37 @@ int main(){
     bool flag = 1;
     scanf("%s", input_string);
     for (int i = 0; i<strlen(input_string); i++){
-	switch(input_string[i]){
-	case ']':
-	    if (get(&scob_struct, '['))
-		pop(&scob_struct);
-	    else
-		flag = 0;
-	    break;
-	case ')':
-	    if (get(&scob_struct, '('))
-		pop(&scob_struct);
-	    else
-		flag = 0;
-	    break;
-	case '}':
-	    if (get(&scob_struct, '{'))
-		pop(&scob_struct);
-	    else
-		flag = 0;
-	    break;
-	default:
-	    push(&scob_struct, input_string[i]);
-	    break;
+		switch(input_string[i]){
+		case ']':
+	    	if (get(&scob_struct, '['))
+				pop(&scob_struct);
+	    	else
+				flag = 0;
+	    	break;
+		case ')':
+	    	if (get(&scob_struct, '('))
+				pop(&scob_struct);
+	    	else
+				flag = 0;
+	    	break;
+		case '}':
+	    	if (get(&scob_struct, '{'))
+				pop(&scob_struct);
+	    	else
+				flag = 0;
+	    	break;
+		default:
+	    	push(&scob_struct, input_string[i]);
+	    	break;
 	}
 	if (!flag)
 	    break;
     }
     if (flag && scob_struct.next == NULL)
-	printf("%s", "Yes");
+		printf("%s", "Yes");
     else
-	printf("%s", "No");
+		printf("%s", "No");
     while (scob_struct.next !=NULL)
-	pop(&scob_struct);
+		pop(&scob_struct);
     return 0;
 }
