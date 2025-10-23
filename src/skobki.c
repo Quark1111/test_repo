@@ -30,7 +30,7 @@ int main(){
     scob_struct.next = NULL;
     bool flag = 1;
     scanf("%s", input_string);
-    for (int i = 0; i<strlen(input_string); i++){
+    for (int i = 0; i < strlen(input_string); i++){
 		switch(input_string[i]){
 		case ']':
 	    	if (get(&scob_struct, '['))
