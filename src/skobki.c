@@ -14,8 +14,10 @@ void push(stack *begin, char c){
 }
 void pop(stack *begin){
     stack *elem = begin->next;
-    begin->next = elem->next;
-    free(elem);
+	if (elem != NULL){
+    	begin->next = elem->next;
+    	free(elem);
+	}
 }
 bool get(stack *begin, char simbol){
     if (begin->next != NULL)
