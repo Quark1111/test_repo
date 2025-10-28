@@ -1,89 +1,69 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<stdbool.h>
-typedef struct sort_list{
-    int value;
-    struct sort_list *next;
-} sort_list;
-void append(sort_list *begin, int value){
-    sort_list *new_elem = malloc(sizeof(sort_list));
-    sort_list  *p = begin;
-    bool flag = 0;
-    new_elem->value = value;
-    while (p->next != NULL){
-	if (p->next->value > value){
-	    new_elem->next = p->next;
-	    p->next = new_elem;
-	    flag = 1;
-	    break;
-	}
-	p = p->next;
-    }
-    if (!flag){
-	new_elem->next = p->next;
-	p->next = new_elem;
-    }
+typedef struct cyclic_list{
+    int number;
+    struct cyclic_list *next;
+} cyclic_list;
+cyclic_list *append(cyclic_list *current, cyclic_list *begin, int num){
+    cyclic_list *elem = malloc(sizeof(cyclic_list));
+    elem->number =  num;
+    current->next = elem;
+    elem->next = begin;
+    return elem;
 }
-void del_elem(sort_list *begin, int value){
-    sort_list *p = begin;
-    bool flag  = 0;
-    while (p->next != NULL){
-	if (p->next->value == value){
-	    sort_list *elem = p->next;
-	    p->next = elem->next;
-	    flag = 1;
-	    free(elem);
-	    break;
-	}
-	p = p->next;
-    }
-    if (!flag){
-	printf("\n %s", "the item is not in the list");
-    }
-}
-void del_list(sort_list *begin){
-    while (begin->next != NULL){
-	sort_list *p = begin->next;
+void del_list(cyclic_list *begin){
+    while (begin->next != begin){
+	cyclic_list *p = begin->next;
 	begin->next = p->next;
 	free(p);
     }
 }
-void printf_list(sort_list *begin){
-    sort_list *p = begin->next;
-    while (p != NULL){
-	printf("%d %c", p->value, ' ');
-	p = p->next;
+void del_elem(cyclic_list *elem, int *len){
+    cyclic_list *p = elem->next;
+    elem->next = p->next;
+    free(p); 
+    (*len)--;
+}
+void printf_list(cyclic_list *begin){
+    cyclic_list *elem = begin->next;
+    while (elem != begin){
+	printf("%d %c", elem->number, ' ');
+	elem = elem->next;
     }
     printf("\n");
 }
 int main(){
-    sort_list begin;
-    begin.next = NULL;
-    bool flag = 1;
-    while (flag){
-	int c, value;
-	printf("%s \n", "0: close the program");
-	printf("%s \n", "1: add a value to the list");
-	printf("%s \n", "2: delete a value");
-	printf("%s \n", "3: output a list");
-	scanf ("%d", &c);
-	switch(c){
-	    case 0:
-		flag = 0;
-		break;
-	    case 1:
-		scanf("%d", &value);
-		append(&begin, value);
-		break;
-	    case 2:
-		scanf("%d", &value);
-		del_elem(&begin, value);
-		break;
-	    case 3:
-		printf_list(&begin);
-		break;
-	}
+    int n, m, len = 0;
+    cyclic_list begin, *p;
+    begin.next = &begin;
+    p = &begin;
+    scanf("%d %d", &n, &m);
+    for (int i = 1; i <= n; i++){
+	p = append(p, &begin, i);
+	len++;
     }
-    del_list(&begin);
+    if (len > 0){
+	int c = 0;
+	cyclic_list *elem =  &begin;
+	while (len >= m){
+	    if ((c + 1) % m == 0){
+        	if (elem->next == &begin)
+        	    elem = elem->next;
+		del_elem(elem, &len);
+		c = 0;
+	    }
+	    else{
+        	if (elem->next != &begin)
+            	    c++;
+		elem = elem->next;
+	    }
+	}
+	printf_list(&begin);
+	del_list(&begin);
+    }
+    else{
+	printf("%s", "the list is empty");
+    }
     return 0;
 }
