@@ -1,32 +1,36 @@
-name: Ruff Code Check
+name: Python Checks
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, master ]
+  push:
+    branches: [ main, master ]
 
 jobs:
-  ruff:
+  lint-and-test:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
+    - uses: actions/checkout@v4
+    
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
-
-    - name: Install Ruff
+        
+    - name: Install dependencies
       run: |
-        pip install ruff
-
-    - name: Run Ruff check
+        python -m pip install --upgrade pip
+        pip install pytest ruff
+        
+    - name: Format code with Ruff
       run: |
-        ruff check .
-
-    - name: Run Ruff format check
+        ruff format .
+        
+    - name: Lint with Ruff
       run: |
-        ruff format --check .
+        ruff check . --fix
+        
+    - name: Run tests
+      run: |
+        python -m pytest -v
