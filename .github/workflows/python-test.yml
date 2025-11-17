@@ -5,36 +5,38 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-      
+
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.8'
-        
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install pytest
-        
+
     - name: Find and list all test files
       run: |
         echo "=== Ищем все Python файлы ==="
         find . -name "*.py" -type f
         echo "=== Пытаемся импортировать модули ==="
-        python -c "import hp_sort; print('hp_sort импортирован успешно')" || echo "Ошибка импорта hp_sort"
-        python -c "from hp_sort import heap_sort; print('heap_sort импортирован успешно')" || echo "Ошибка импорта heap_sort"
-        
+        python -c "import src.hp_sort; print('hp_sort импортирован успешно')" || echo "Ошибка импорта hp_sort"
+        python -c "from src.hp_sort import heap_sort; print('heap_sort импортирован успешно')" || echo "Ошибка импорта heap_sort"
+
     - name: Run tests with multiple attempts
       run: |
-        echo "=== Попытка 1: Ищем тесты в корне ==="
-        pytest test_sort.py -v || pytest test_heap.py -v || echo "Тесты в корне не найдены"
-        
-        echo "=== Попытка 2: Ищем тесты в src ==="
-        pytest src/test_sort.py -v || pytest src/test_heap.py -v || echo "Тесты в src не найдены"
-        
-        echo "=== Попытка 3: Ищем любые тесты ==="
-        pytest --collect-only -v
+        echo "=== Попытка 1: Ищем тесты в src ==="
+        python -m pytest src/test_sort.py -v || echo "Тесты в src не найдены"
+
+        echo "=== Попытка 2: Ищем любые тесты ==="
+        python -m pytest --collect-only -v
+
+    - name: Run specific test
+      run: |
+        cd src
+        python -m pytest test_sort.py -v
