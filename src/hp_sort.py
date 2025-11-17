@@ -14,7 +14,8 @@ def heap_sort(ms):
             ind //= 2
     x = 0
     ln = len(mas)
-    while x < l:
+    length = ln
+    while x < length:
         x += 1
         mas[x - 1] = mas_heap[1]
         mas_heap[1], mas_heap[ln] = mas_heap[ln], mas_heap[1]    
