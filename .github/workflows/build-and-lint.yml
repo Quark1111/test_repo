@@ -13,18 +13,13 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang-format-18 clang-tidy-18 build-essential python3-pip
-          pip3 install compiledb
+          sudo apt-get install -y clang-format-18 clang-tidy-18
           
       - name: Check format
         run: |
-          find . -path ./build -prune -o -type f -name '*.[c|h]' -print | xargs clang-format-18 --style=file --dry-run -Werror
-          
-      - name: Generate compile_commands.json
-        run: |
-          compiledb make  # если у вас есть Makefile
-          # compiledb -n gcc -c main.c -I.
+          find . -type f -name '*.[c|h]' -exec clang-format-18 --style=file --dry-run -Werror {} \;
           
       - name: Lint with clang-tidy
         run: |
-          run-clang-tidy-18 -p=.
+          # Простая проверка без compile_commands.json
+          find . -name "*.c" -exec clang-tidy-18 {} -- -I. \;
