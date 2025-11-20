@@ -22,8 +22,8 @@ jobs:
           
       - name: Generate compile_commands.json
         run: |
-          echo 'gcc -c main.c -o main.o' > build_commands.txt
-          compiledb -n build_commands.txt
+          compiledb make  # если у вас есть Makefile
+          # compiledb -n gcc -c main.c -I.
           
       - name: Lint with clang-tidy
         run: |
