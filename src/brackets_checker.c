@@ -12,38 +12,38 @@ int main()
     bool flag = 1;
     scanf("%s", InputString);
     for (int i = 0; i < strlen(InputString); i++){
-	switch(InputString[i]){
-	case ']':
-	    if (get(&ScobStruct, '['))
-		pop(&ScobStruct);
-	    else
-		flag = 0;
-	    break;
-	case ')':
-	    if (get(&ScobStruct, '('))
-		pop(&ScobStruct);
-	    else
-		flag = 0;
-	    break;
-	case '}':
-	    if (get(&ScobStruct, '{'))
-		pop(&ScobStruct);
-	    else
-		flag = 0;
-	    break;
-	default:
-	    if (InputString[i] == '(' || InputString[i] == '[' || InputString[i] == '{')
-		push(&ScobStruct, InputString[i]);
-	    break;
-	}
-	if (!flag)
-	    break;
+		switch(InputString[i]){
+		case ']':
+		    if (get(&ScobStruct, '['))
+				pop(&ScobStruct);
+		    else
+				flag = 0;
+		    break;
+		case ')':
+		    if (get(&ScobStruct, '('))
+				pop(&ScobStruct);
+		    else
+				flag = 0;
+		    break;
+		case '}':
+		    if (get(&ScobStruct, '{'))
+				pop(&ScobStruct);
+		    else
+				flag = 0;
+		    break;
+		default:
+		    if (InputString[i] == '(' || InputString[i] == '[' || InputString[i] == '{')
+				push(&ScobStruct, InputString[i]);
+		    break;
+		}
+		if (!flag)
+		    break;
     }
     if (flag && ScobStruct.next == NULL)
-	printf("%s", "Yes");
+		printf("%s", "Yes");
     else
-	printf("%s", "No");
+		printf("%s", "No");
     while (ScobStruct.next !=NULL)
-	pop(&ScobStruct);
+		pop(&ScobStruct);
     return 0;
 }
