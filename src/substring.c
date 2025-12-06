@@ -9,8 +9,8 @@ int main()
     scanf("%s", Str);
     scanf("%s", SubStr);
     while ((ptr = strstr(ptr, SubStr)) != NULL) {
-	cnt++;
-	ptr += 1;
+		cnt++;
+		ptr += 1;
     }
     printf("%d", cnt);
     return 0;
