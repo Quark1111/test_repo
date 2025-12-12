@@ -10,23 +10,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-      with:
-        # Важно: загружаем все ветки для корректной работы
-        fetch-depth: 0
     
-    - name: Debug - Check repository structure
+    - name: Debug repository structure
       run: |
-        echo "=== Repository structure ==="
+        echo "=== Repository contents ==="
         ls -la
         echo ""
         echo "=== Test directory ==="
-        ls -la test/ 2>/dev/null || echo "Test directory not found"
+        ls -la test/ 2>/dev/null || echo "No test directory"
         echo ""
-        echo "=== Python files in test/ ==="
-        find test/ -name "*.py" -o -name "test_*.py" 2>/dev/null | head -10
-        echo ""
-        echo "=== Existing pytest.ini ==="
-        cat pytest.ini 2>/dev/null || echo "No pytest.ini in repository"
+        echo "=== Check test files ==="
+        find test/ -name "*.py" -exec echo "Found: {}" \;
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -38,26 +32,27 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest
     
-    - name: Setup PYTHONPATH and test discovery
+    - name: Check test file syntax
       run: |
-        # Устанавливаем PYTHONPATH для импорта из src
-        export PYTHONPATH="$GITHUB_WORKSPACE/src:$PYTHONPATH"
-        echo "PYTHONPATH: $PYTHONPATH"
-        
-        # Проверяем, видит ли pytest тесты
-        echo ""
-        echo "=== Pytest test discovery ==="
-        python -m pytest --collect-only 2>&1 | head -30 || true
-        
-        # Если не находит, пробуем искать по-другому
-        echo ""
-        echo "=== Alternative discovery ==="
-        python -m pytest test/ --collect-only 2>&1 | head -30 || true
+        echo "=== Syntax check ==="
+        for test_file in test/*.py; do
+          if [ -f "$test_file" ]; then
+            echo "Checking $test_file..."
+            if python -m py_compile "$test_file" 2>/dev/null; then
+              echo "  ✓ Valid syntax"
+            else
+              echo "  ✗ Syntax error"
+              # Покажем первую ошибку
+              python -m py_compile "$test_file" 2>&1 | head -5
+            fi
+          fi
+        done
     
     - name: Run tests
       run: |
         # Основной запуск тестов
         export PYTHONPATH="$GITHUB_WORKSPACE/src:$PYTHONPATH"
+        echo "PYTHONPATH: $PYTHONPATH"
         
         echo "=== Running tests ==="
         
@@ -68,11 +63,35 @@ jobs:
         else
           # Если нет pytest.ini, создаем минимальный
           echo "Creating minimal pytest.ini"
-          cat > pytest.ini << EOF
-          [pytest]
-          testpaths = test
-          pythonpath = ./src
-          addopts = -v --tb=short
-          EOF
+          cat > pytest.ini << 'EOF'
+[pytest]
+testpaths = test
+pythonpath = ./src
+addopts = -v --tb=short
+EOF
           python -m pytest -v --tb=short
         fi
+    
+    - name: Debug if tests fail
+      if: failure()
+      run: |
+        echo "=== Debug information ==="
+        echo "Python version:"
+        python --version
+        
+        echo ""
+        echo "Trying to import heap_sort:"
+        python -c "
+        import sys
+        sys.path.insert(0, './src')
+        try:
+            from HeapSort import heap_sort
+            print('✓ Successfully imported heap_sort')
+            print(f'  Function: {heap_sort}')
+        except ImportError as e:
+            print(f'✗ Import error: {e}')
+        "
+        
+        echo ""
+        echo "Contents of src/HeapSort.py (first 10 lines):"
+        head -10 src/HeapSort.py 2>/dev/null || echo "File not found"
