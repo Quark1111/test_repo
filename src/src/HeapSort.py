@@ -22,5 +22,3 @@ def HeapSort(mas):
         heapify(mas, i, 0)
 
     return mas
-
-print(HeapSort([21, 1, 678, 12, 0, 18, 19]))
