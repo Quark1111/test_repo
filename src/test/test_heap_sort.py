@@ -1,4 +1,4 @@
-from src.HeapSort import heap_sort
+from src.HeapSort import HeapSort
 import pytest 
 @pytest.mark.parametrize(
  ["input", "output"],
@@ -22,3 +22,4 @@ def test_empty():
 
 def test_negative():
     assert heap_sort([32, 11, 12, 14, -10, 0, 9, 0, 0, 0, -7, 112, 3, -110]) == [-110, -10, -7, 0, 0, 0, 0, 3, 9, 11,  , 14, 32, 112]
+
