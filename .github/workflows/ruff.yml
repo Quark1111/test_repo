@@ -1,97 +1,19 @@
 name: CI
 
-on:
-  - push
-  - pull_request
+on: [push, pull_request]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
-    
-    - name: Debug repository structure
-      run: |
-        echo "=== Repository contents ==="
-        ls -la
-        echo ""
-        echo "=== Test directory ==="
-        ls -la test/ 2>/dev/null || echo "No test directory"
-        echo ""
-        echo "=== Check test files ==="
-        find test/ -name "*.py" -exec echo "Found: {}" \;
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
+    - uses: actions/setup-python@v4
       with:
         python-version: '3.13'
     
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pytest
-    
-    - name: Check test file syntax
-      run: |
-        echo "=== Syntax check ==="
-        for test_file in test/*.py; do
-          if [ -f "$test_file" ]; then
-            echo "Checking $test_file..."
-            if python -m py_compile "$test_file" 2>/dev/null; then
-              echo "  ✓ Valid syntax"
-            else
-              echo "  ✗ Syntax error"
-              # Покажем первую ошибку
-              python -m py_compile "$test_file" 2>&1 | head -5
-            fi
-          fi
-        done
+    - run: pip install pytest
     
     - name: Run tests
       run: |
-        # Основной запуск тестов
-        export PYTHONPATH="$GITHUB_WORKSPACE/src:$PYTHONPATH"
-        echo "PYTHONPATH: $PYTHONPATH"
-        
-        echo "=== Running tests ==="
-        
-        # Сначала пробуем с существующим pytest.ini
-        if [ -f pytest.ini ]; then
-          echo "Using existing pytest.ini"
-          python -m pytest -v --tb=short
-        else
-          # Если нет pytest.ini, создаем минимальный
-          echo "Creating minimal pytest.ini"
-          cat > pytest.ini << 'EOF'
-[pytest]
-testpaths = test
-pythonpath = ./src
-addopts = -v --tb=short
-EOF
-          python -m pytest -v --tb=short
-        fi
-    
-    - name: Debug if tests fail
-      if: failure()
-      run: |
-        echo "=== Debug information ==="
-        echo "Python version:"
-        python --version
-        
-        echo ""
-        echo "Trying to import heap_sort:"
-        python -c "
-        import sys
-        sys.path.insert(0, './src')
-        try:
-            from HeapSort import heap_sort
-            print('✓ Successfully imported heap_sort')
-            print(f'  Function: {heap_sort}')
-        except ImportError as e:
-            print(f'✗ Import error: {e}')
-        "
-        
-        echo ""
-        echo "Contents of src/HeapSort.py (first 10 lines):"
-        head -10 src/HeapSort.py 2>/dev/null || echo "File not found"
+        export PYTHONPATH=./src:$PYTHONPATH
+        python -m pytest test/ -v
