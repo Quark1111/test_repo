@@ -15,13 +15,14 @@ import pytest
 )
 
 def test_basic(input, output):
-    assert heap_sort(input) == output
+    assert HeapSort(input) == output
 
 def test_empty():
-    assert heap_sort([]) == []
+    assert HeapSort([]) == []
 
 def test_negative():
-    assert heap_sort([32, 11, 12, 14, -10, 0, 9, 0, 0, 0, -7, 112, 3, -110]) == [-110, -10, -7, 0, 0, 0, 0, 3, 9, 11, 12, 14, 32, 112]
+    assert HeapSort([32, 11, 12, 14, -10, 0, 9, 0, 0, 0, -7, 112, 3, -110]) == [-110, -10, -7, 0, 0, 0, 0, 3, 9, 11, 12, 14, 32, 112]
+
 
 
 
