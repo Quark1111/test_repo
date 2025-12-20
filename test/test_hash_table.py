@@ -60,3 +60,4 @@ def test_len_after_remove(self):
     assert len(ht[index]) == 1
 
         
+
