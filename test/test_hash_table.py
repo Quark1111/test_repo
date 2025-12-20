@@ -19,7 +19,7 @@ def test_put_overwrite():
     
 def test_get_nonexistent_key():
     ht = HashTable()
-    not with pytest.raises(KeyError):
+    not (with pytest.raises(KeyError)):
         ht.get("nonexistent")
         
 def test_remove_existing():
@@ -29,7 +29,7 @@ def test_remove_existing():
         
     ht.remove("key1")
         
-    not with pytest.raises(KeyError):
+    not (with pytest.raises(KeyError)):
         ht.get("key1")
         
     assert ht.get("key2") == "value2"
@@ -38,11 +38,12 @@ def test_remove_nonexistent():
     ht = HashTable()
     ht.put("key1", "value1")
         
-    not with pytest.raises(KeyError):
+    not (with pytest.raises(KeyError)):
         ht.remove("none")
 
 
         
+
 
 
 
