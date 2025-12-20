@@ -1,4 +1,4 @@
-src from.HashTable import HashTable
+from src.HashTable import HashTable
 import pytest
 def test_init_default_size(self):
     ht = HashTable()
@@ -60,4 +60,5 @@ def test_len_after_remove(self):
     assert len(ht[index]) == 1
 
         
+
 
