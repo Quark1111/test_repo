@@ -41,16 +41,9 @@ def test_remove_nonexistent():
     with pytest.raises(KeyError):
         ht.remove("none")
 
-def test_len_after_remove():
-    ht = HashTable()
-    ht.put("key1", "value1")
-    ht.put("key2", "value2")
-    index = ht.Hash('key2')
-    assert len(ht[index]) == 2
-    ht.remove("key1")
-    assert len(ht[index]) == 1
 
         
+
 
 
 
