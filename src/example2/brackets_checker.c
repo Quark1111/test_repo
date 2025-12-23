@@ -20,17 +20,17 @@ int main()
 	    push(&ScobStruct, str[i]);
 	else if (str[i] == ')' || str[i] == ']'||str[i] == '}')
 	    if (ScobStruct.next == NULL || !checkParen(get(&ScobStruct), str[i])){
-		flag = 0;
-		break;
+			flag = 0;
+			break;
 	    } else {
-		pop(&ScobStruct);
+			pop(&ScobStruct);
 	    }
     }
     if (flag && ScobStruct.next == NULL)
-	printf("%s", "Yes");
+		printf("%s", "Yes");
     else
-	printf("%s", "No");
+		printf("%s", "No");
     while (ScobStruct.next !=NULL)
-	pop(&ScobStruct);
+		pop(&ScobStruct);
     return 0;
 }
