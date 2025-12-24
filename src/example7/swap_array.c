@@ -4,9 +4,9 @@
 void reverse(int* array, int len)
 {
     for (int i = 0; i < len / 2; i++) {
-	int tmp = array[i];
-	array[i] = array[len - i - 1];
-	array[len - i - 1] = tmp;
+		int tmp = array[i];
+		array[i] = array[len - i - 1];
+		array[len - i - 1] = tmp;
     }
 }
 
@@ -21,7 +21,7 @@ int main()
     }
 
     for (int i = 0; i < n + m; i++) {
-	scanf("%d", &array[i]);
+		scanf("%d", &array[i]);
     }
 
     reverse(array, n + m);
@@ -29,7 +29,7 @@ int main()
     reverse(array + m, n);
 
     for (int i = 0; i < n + m; i++) {
-	printf("%d %c", array[i], ' ');
+		printf("%d %c", array[i], ' ');
     }
 
     free(array);
