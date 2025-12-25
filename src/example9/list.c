@@ -3,10 +3,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-void append(SortList *begin, int value)
+void append(SortList* begin, int value)
 {
-    SortList *NewElem = malloc(sizeof(SortList));
-    SortList  *p = begin;
+    SortList* NewElem = malloc(sizeof(SortList));
+    SortList* p = begin;
     bool flag = 0;
     NewElem->value = value;
     
@@ -26,7 +26,7 @@ void append(SortList *begin, int value)
     }
 }
 
-int get(SortList *begin)
+int get(SortList* begin)
 {
     if (begin->next != NULL) {
         return begin->next->value;
@@ -34,14 +34,14 @@ int get(SortList *begin)
 	return -1;
 }
 
-void DelElem(SortList *begin, int value)
+void DelElem(SortList* begin, int value)
 {
-    SortList *p = begin;
+    SortList* p = begin;
     bool flag  = 0;
     
 	while (p->next != NULL) {
         if (p->next->value == value) {
-		    SortList *elem = p->next;
+		    SortList* elem = p->next;
 		    p->next = elem->next;
 		    flag = 1;
 		    free(elem);
@@ -50,23 +50,23 @@ void DelElem(SortList *begin, int value)
         p = p->next;
     }
 	
-    if (!flag){
+    if (!flag) {
         printf("\n %s", "the item is not in the list");
     }
 }
 
-void DelList(SortList *begin)
+void DelList(SortList* begin)
 {
     while (begin->next != NULL) {
-        SortList *p = begin->next;
+        SortList* p = begin->next;
 		begin->next = p->next;
 		free(p);
     }
 }
 
-void PrintfList(SortList *begin)
+void PrintfList(SortList* begin)
 {
-    SortList *p = begin->next;
+    SortList* p = begin->next;
     while (p != NULL) {
         printf("%d %c", p->value, ' ');
 		p = p->next;
