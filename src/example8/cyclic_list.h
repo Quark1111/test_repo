@@ -3,7 +3,7 @@ typedef struct node {
     struct node* next;
 } node;
 
-typedef struct list{
+typedef struct list {
     int len;
     struct node* head;
     struct node* current;
