@@ -27,7 +27,7 @@ int main()
     scanf("%d %d", &n, &m);
 
     for (int i = 1; i <= n; i++) {
-	List.current = append(&List, i);
+		List.current = append(&List, i);
     }
     warriors(&List, n, m);
     List.current = List.head->next;
