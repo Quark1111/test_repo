@@ -1,17 +1,7 @@
 #include "stack.h"
 #include <stdio.h>
 #include <string.h>
-
-int IntToStr(char num[10], int len)
-{
-    int res = 0, degree10 =  1;
-    for (int i = len - 1; i >= 0; i--) {
-		res += (num[i] - '0') * degree10;
-		degree10 *= 10;
-    }
-	
-    return res;
-}
+#include <stdbool.h>
 
 bool isOperatorOrBracket(char ch)
 {
@@ -46,20 +36,21 @@ void addOperation(stack* operations, char operation){
 int main()
 {
     stack operations;
-    char str[10000], num[10], len = 0;
+    char str[10000];
     operations.next = NULL;
     fgets(str, sizeof(str), stdin);
-
+    bool prevSymbolsIsNumber = false;
+    
     for (int i = 0; i < strlen(str); i++) {
 		if (str[i] >= '0' && str[i] <= '9') {
-		    num[len] = str[i];
-		    len++;
+                    printf("%c", str[i]);
+                    prevSymbolsIsNumber = true;
 		} else if (isOperatorOrBracket(str[i])){
-		    if (len){
-				printf("%d %c", IntToStr(num, len), ' ');
-				len = 0;
-		    }
-	
+                    if (prevSymbolsIsNumber) {
+                        printf("%c", ' ');
+                        prevSymbolsIsNumber = false;
+                    }
+                    
 		    if (str[i] == '(') {
 				push(&operations, str[i]);
 		    } else if (str[i] == ')') {
@@ -77,11 +68,9 @@ int main()
 			}
 		}
     }
-    
-    if (len) {
-		printf("%d %c", IntToStr(num, len), ' ');
+    if (prevSymbolsIsNumber) {
+        printf("%c", ' ');
     }
-
     while (operations.next != NULL) {
 		printf("%c %c", get(&operations), ' ');
 		pop(&operations);
