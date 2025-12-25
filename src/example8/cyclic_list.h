@@ -12,4 +12,4 @@ typedef struct list {
 void createList(list* List);
 void deleteList(list* List);
 node* append(list* List, int value);
-void pop(list* List) ;
+void pop(list* List);
