@@ -43,13 +43,13 @@ int main()
     
     for (int i = 0; i < strlen(str); i++) {
 		if (str[i] >= '0' && str[i] <= '9') {
-                    printf("%c", str[i]);
-                    prevSymbolsIsNumber = true;
+            printf("%c", str[i]);
+            prevSymbolsIsNumber = true;
 		} else if (isOperatorOrBracket(str[i])){
-                    if (prevSymbolsIsNumber) {
-                        printf("%c", ' ');
-                        prevSymbolsIsNumber = false;
-                    }
+            if (prevSymbolsIsNumber) {
+                printf("%c", ' ');
+                prevSymbolsIsNumber = false;
+            }
                     
 		    if (str[i] == '(') {
 				push(&operations, str[i]);
