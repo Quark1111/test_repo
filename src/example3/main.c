@@ -2,8 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 
-stack operations;
-
 int IntToStr(char num[10], int len)
 {
     int res = 0, degree10 =  1;
@@ -33,20 +31,21 @@ int priority(char operator)
     return 0;
 }
 
-void addOperation(char operation){
-    char prevOperation = get(&operations);
+void addOperation(stack* operations, char operation){
+    char prevOperation = get(operations);
 	
     while (priority(prevOperation) >= priority(operation)) {
 		printf("%c %c", prevOperation, ' ');
-		pop(&operations);
-		prevOperation = get(&operations);
+		pop(operations);
+		prevOperation = get(operations);
     }
 	
-    push(&operations, operation);
+    push(operations, operation);
 }
 
 int main()
 {
+    stack operations;
     char str[10000], num[10], len = 0;
     operations.next = NULL;
     fgets(str, sizeof(str), stdin);
@@ -74,7 +73,7 @@ int main()
 	
 			pop(&operations);
 		    } else {
-				addOperation(str[i]);
+				addOperation(&operations, str[i]);
 			}
 		}
     }
