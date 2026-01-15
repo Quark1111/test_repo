@@ -60,7 +60,6 @@ void* get(vector* vec, int index)
 
 void pop(vector* vec, int index)
 {
-
     if (index > vec->len - 1 || index < 0) {
         return;
     }
