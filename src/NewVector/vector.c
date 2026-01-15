@@ -25,7 +25,6 @@ void deleteVector(vector* vec)
         for (int i = 0; i < vec->len; i++) {
             free(vec->data[i]);
         }
-        
         free(vec->data);
         vec->data = NULL;
         vec->capacity = 0;
