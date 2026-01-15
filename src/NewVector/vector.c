@@ -56,7 +56,6 @@ void* get(vector* vec, int index)
     if (index < 0 || index > vec->len - 1) {
         return NULL;
     }
-    
     return vec->data[index];
 } 
 
