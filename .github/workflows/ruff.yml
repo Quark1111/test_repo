@@ -1,7 +1,22 @@
 name: Debug Tests
-
-on: [push, pull_request]
-
+on:
+  push:
+    paths:
+      - '**.py'       
+      - 'requirements.txt'
+      - 'pyproject.toml'
+      - 'setup.py'
+      - 'test/**' 
+      - '.github/workflows/**'
+  
+  pull_request:
+    paths:
+      - '**.py'
+      - 'requirements.txt'
+      - 'pyproject.toml'
+      - 'setup.py'
+      - 'test/**'
+      - '.github/workflows/**'
 jobs:
   debug:
     runs-on: ubuntu-latest
